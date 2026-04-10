@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Taller Grado 11 — Probabilidad y Estadística</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:opsz,wght@8..60,300;400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+  :root{--navy:#0f2744;--blue:#1a4d8f;--sky:#2e86c1;--accent:#e8a020;--red:#c0392b;--teal:#0e7c7b;--light:#eaf4fc;--white:#fafcff;--gray:#5a6a7a;--ink:#1a2030;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:"Source Serif 4",Georgia,serif;background:var(--white);color:var(--ink);line-height:1.7;}
+  .hero{background:linear-gradient(135deg,#0b1e3d 0%,#0e7c7b 60%,#1a4d8f 100%);color:white;padding:64px 40px 80px;position:relative;overflow:hidden;}
+  .hero::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='52' height='52' viewBox='0 0 52 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M0 0h52v52H0V0zm26 26v26h26V26H26zM0 26h26V0H0v26z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
+  .hero-inner{max-width:900px;margin:0 auto;position:relative;}
+  .hero-badge{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-family:"JetBrains Mono",monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;padding:6px 16px;border-radius:100px;margin-bottom:20px;}
+  .hero h1{font-family:"Playfair Display",serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:900;line-height:1.15;margin-bottom:16px;}
+  .hero h1 span{color:var(--accent);}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:20px;font-size:0.9rem;opacity:0.85;margin-bottom:32px;}
+  .hero-meta span::before{content:"◆ ";color:var(--accent);}
+  .download-btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--navy);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:0.85rem;letter-spacing:0.05em;text-transform:uppercase;padding:14px 28px;border-radius:6px;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(0,0,0,0.3);cursor:pointer;border:none;}
+  .download-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.4);}
+  .page{max-width:940px;margin:0 auto;padding:0 24px;}
+  .section-header{display:flex;align-items:center;gap:16px;padding:40px 0 20px;}
+  .section-number{font-family:"JetBrains Mono",monospace;font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal);white-space:nowrap;}
+  .section-title{font-family:"Playfair Display",serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--navy);}
+  .section-line{flex:1;height:2px;background:linear-gradient(to right,var(--teal),transparent);}
+  .card{background:white;border:1px solid #dde8f0;border-radius:12px;padding:28px 32px;margin-bottom:24px;box-shadow:0 2px 12px rgba(15,39,68,0.06);}
+  .card-title{font-family:"JetBrains Mono",monospace;font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+  .card p{color:var(--gray);font-size:0.97rem;margin-bottom:10px;}
+  .def-box{border-left:4px solid var(--teal);background:var(--light);padding:16px 20px;border-radius:0 8px 8px 0;margin:16px 0;}
+  .def-box strong{color:var(--navy);display:block;margin-bottom:4px;font-size:1rem;}
+  .def-box p{color:var(--ink);margin:0;font-size:0.95rem;}
+  .example{background:#fff8ee;border:1px solid #f0d080;border-radius:8px;padding:16px 20px;margin:16px 0;}
+  .example .ex-label{font-family:"JetBrains Mono",monospace;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#b07800;margin-bottom:8px;}
+  .example p{color:var(--ink);font-size:0.95rem;margin-bottom:6px;}
+  code{font-family:"JetBrains Mono",monospace;background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:4px;font-size:0.9em;color:var(--navy);}
+  .freq-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem;}
+  .freq-table th{background:var(--navy);color:white;padding:9px 12px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:0.75rem;letter-spacing:0.04em;}
+  .freq-table td{padding:9px 12px;border-bottom:1px solid #dde8f0;text-align:center;vertical-align:middle;}
+  .freq-table tr:nth-child(even) td{background:var(--light);}
+  .freq-table .total td{background:var(--navy);color:white;font-weight:700;}
+  .formula-box{background:#f0fafa;border:2px solid var(--teal);border-radius:10px;padding:18px 22px;margin:16px 0;}
+  .formula-box .f-label{font-family:"JetBrains Mono",monospace;font-size:0.7rem;font-weight:600;text-transform:uppercase;color:var(--teal);margin-bottom:8px;}
+  .formula-box .f-formula{font-family:"JetBrains Mono",monospace;font-size:1rem;color:var(--navy);margin-bottom:6px;}
+  .formula-box p{color:var(--gray);font-size:0.88rem;margin:2px 0;}
+  .hist-visual{background:var(--light);border-radius:10px;padding:20px 16px 12px;margin:16px 0;overflow-x:auto;}
+  .hist-chart{display:flex;align-items:flex-end;gap:4px;height:160px;padding:0 8px;}
+  .bar-wrap{display:flex;flex-direction:column;align-items:center;flex:1;min-width:48px;}
+  .bar{width:100%;border-radius:4px 4px 0 0;transition:opacity 0.2s;}
+  .bar:hover{opacity:0.8;}
+  .bar-label{font-family:"JetBrains Mono",monospace;font-size:0.62rem;color:var(--gray);margin-top:6px;text-align:center;}
+  .bar-val{font-family:"JetBrains Mono",monospace;font-size:0.7rem;font-weight:600;color:var(--navy);margin-bottom:4px;}
+  .alert{display:flex;gap:12px;align-items:flex-start;background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:14px 18px;margin:16px 0;font-size:0.93rem;}
+  .alert .icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+  .alert p{margin:0;color:var(--ink);}
+  .alert-red{background:#fdecea;border-color:var(--red);}
+  .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin:20px 0;}
+  .video-card{background:white;border:1px solid #dde8f0;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(15,39,68,0.06);transition:transform 0.2s,box-shadow 0.2s;}
+  .video-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(15,39,68,0.12);}
+  .video-card iframe{display:block;width:100%;aspect-ratio:16/9;border:none;}
+  .video-info{padding:14px 16px;}
+  .video-info .v-title{font-weight:600;font-size:0.95rem;color:var(--navy);margin-bottom:4px;}
+  .video-info .v-desc{font-size:0.82rem;color:var(--gray);}
+  .topic-badge{display:inline-block;background:var(--navy);color:white;font-family:"JetBrains Mono",monospace;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:10px;}
+  .topic-badge.teal{background:var(--teal);}
+  .topic-badge.gold{background:var(--accent);color:var(--navy);}
+  .instructions-box{background:white;border:2px solid var(--navy);border-radius:12px;padding:28px 32px;margin:24px 0;}
+  .instructions-box h3{font-family:"Playfair Display",serif;font-size:1.2rem;color:var(--navy);margin-bottom:14px;}
+  .instructions-box ol{padding-left:20px;}
+  .instructions-box li{margin-bottom:8px;color:var(--gray);font-size:0.95rem;}
+  .instructions-box li strong{color:var(--navy);}
+  .download-section{background:linear-gradient(135deg,#0b1e3d,#0e7c7b);border-radius:16px;padding:40px 36px;text-align:center;margin:40px 0 60px;color:white;}
+  .download-section h2{font-family:"Playfair Display",serif;font-size:1.8rem;margin-bottom:10px;}
+  .download-section p{opacity:0.85;margin-bottom:24px;font-size:0.97rem;}
+  .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--navy);font-family:"JetBrains Mono",monospace;font-weight:700;font-size:0.85rem;letter-spacing:0.05em;text-transform:uppercase;padding:14px 28px;border-radius:6px;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 16px rgba(0,0,0,0.25);cursor:pointer;border:none;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.35);}
+  hr{border:none;border-top:1px solid #dde8f0;margin:40px 0;}
+  footer{background:var(--navy);color:rgba(255,255,255,0.6);text-align:center;padding:24px;font-size:0.82rem;font-family:"JetBrains Mono",monospace;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+  .fade-up{animation:fadeUp 0.6s ease both;}
+  .delay-1{animation-delay:0.1s;}
+  @media(max-width:600px){.hero{padding:40px 20px 60px;}.card{padding:20px;}.download-section{padding:28px 20px;}}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner fade-up">
+    <div class="hero-badge">Probabilidad y Estadística · Grado 11° · Período 1 · 2026</div>
+    <h1>Estadística con <span>Datos Agrupados</span></h1>
+    <div class="hero-meta">
+      <span>Plan de Mejoramiento — 1er Período</span>
+      <span>I.E. Sagrado Corazón de Jesús</span>
+      <span>Tablas · Histogramas · Polígonos · MTC</span>
+    </div>
+    <button class="download-btn" onclick="descargarTaller()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Descargar Taller Escrito (.docx)
+    </button>
+  </div>
+</section>
+
+<div class="page">
+
+  <!-- ===== TEMA 1: TABLA DE FRECUENCIAS ===== -->
+  <div class="section-header fade-up delay-1">
+    <span class="section-number">Tema 01</span>
+    <h2 class="section-title">Tabla de Frecuencias (Datos Agrupados)</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📚 Conceptos Fundamentales</div>
+    <span class="topic-badge teal">Distribución de frecuencias en intervalos</span>
+    <div class="def-box">
+      <strong>¿Qué es una tabla de frecuencias con datos agrupados?</strong>
+      <p>Cuando se tiene muchos datos, se organizan en <strong>intervalos de clase</strong>. Cada intervalo agrupa un rango de valores. La tabla incluye: intervalo, marca de clase (xi), frecuencia absoluta (fi), frecuencia relativa (fri) y frecuencia acumulada (Fi).</p>
+    </div>
+    <div class="def-box">
+      <strong>Columnas de la tabla — ¿Qué significa cada una?</strong>
+      <p><strong>Intervalo [a, b):</strong> rango de valores agrupados. El "[" incluye el límite, el ")" lo excluye.<br/>
+      <strong>Marca de clase (xi):</strong> punto medio del intervalo → <code>xi = (a + b) / 2</code><br/>
+      <strong>Frecuencia absoluta (fi):</strong> cuántos datos caen en ese intervalo.<br/>
+      <strong>Frecuencia relativa (fri):</strong> proporción → <code>fri = fi / n</code><br/>
+      <strong>Frecuencia acumulada (Fi):</strong> suma de fi hasta ese intervalo → <code>Fi = fi + Fi-1</code></p>
+    </div>
+
+    <div class="example">
+      <div class="ex-label">✏️ Ejemplo resuelto — Tabla completa</div>
+      <p>Notas de 40 estudiantes agrupadas en intervalos de amplitud 10:</p>
+      <table class="freq-table">
+        <thead>
+          <tr><th>Intervalo</th><th>xi</th><th>fi</th><th>fri</th><th>Fi</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>[50 – 60)</td><td>55</td><td>3</td><td>0,075 (7,5%)</td><td>3</td></tr>
+          <tr><td>[60 – 70)</td><td>65</td><td>7</td><td>0,175 (17,5%)</td><td>10</td></tr>
+          <tr><td>[70 – 80)</td><td>75</td><td>12</td><td>0,300 (30,0%)</td><td>22</td></tr>
+          <tr><td>[80 – 90)</td><td>85</td><td>10</td><td>0,250 (25,0%)</td><td>32</td></tr>
+          <tr><td>[90 – 100]</td><td>95</td><td>8</td><td>0,200 (20,0%)</td><td>40</td></tr>
+          <tr class="total"><td>TOTAL</td><td>—</td><td>40</td><td>1,000 (100%)</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <p>→ <code>xi de [70–80) = (70+80)/2 = 75</code> · <code>fri = 12/40 = 0,30</code> · <code>Fi = 3+7+12 = 22</code></p>
+    </div>
+
+    <div class="alert">
+      <span class="icon">⚠️</span>
+      <div><p><strong>Recuerda:</strong> La suma de todas las frecuencias absolutas debe ser igual a <strong>n</strong> (total de datos). La suma de todas las frecuencias relativas debe ser <strong>1,00 ó 100%</strong>. Si no cuadra, hay un error en los cálculos.</p></div>
+    </div>
+  </div>
+
+  <div class="section-header" style="padding-top:16px;">
+    <span class="section-number">Video 1</span>
+    <h2 class="section-title" style="font-size:1.3rem;">Tabla de frecuencias — Profe Alex</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="video-grid" style="grid-template-columns:1fr;">
+    <div class="video-card" style="max-width:560px;margin:0 auto;">
+      <iframe src="https://www.youtube.com/embed/NzKjBBGKE6o" title="Tabla de frecuencias agrupada - Profe Alex" allowfullscreen loading="lazy"></iframe>
+      <div class="video-info">
+        <div class="v-title">📊 Tabla de Frecuencias Agrupada en Intervalos — Profe Alex</div>
+        <div class="v-desc">Cómo construir paso a paso una tabla de frecuencias con datos agrupados usando la Regla de Sturges. Incluye fi, fri, Fi y porcentaje.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- ===== TEMA 2: MTC DATOS AGRUPADOS ===== -->
+  <div class="section-header">
+    <span class="section-number">Tema 02</span>
+    <h2 class="section-title">Medidas de Tendencia Central (Datos Agrupados)</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📚 Media, Mediana y Moda para datos agrupados</div>
+    <span class="topic-badge gold">Fórmulas que debes conocer</span><br/><br/>
+
+    <div class="formula-box">
+      <div class="f-label">📐 Media Aritmética (X̄)</div>
+      <div class="f-formula">X̄ = Σ(xi · fi) / n</div>
+      <p>xi = marca de clase · fi = frecuencia absoluta · n = total de datos</p>
+    </div>
+
+    <div class="formula-box">
+      <div class="f-label">📐 Mediana (Mdn)</div>
+      <div class="f-formula">Mdn = Li + [(n/2 – Fi-1) / fi] × A</div>
+      <p>Li = límite inferior del intervalo mediano · n/2 = mitad del total · Fi-1 = frecuencia acumulada anterior · fi = frecuencia del intervalo mediano · A = amplitud</p>
+    </div>
+
+    <div class="formula-box">
+      <div class="f-label">📐 Moda (Mo)</div>
+      <div class="f-formula">Mo = Li + [d1 / (d1 + d2)] × A</div>
+      <p>Li = límite inferior del intervalo modal (el de mayor fi) · d1 = fi modal – fi anterior · d2 = fi modal – fi siguiente · A = amplitud</p>
+    </div>
+
+    <div class="example">
+      <div class="ex-label">✏️ Ejemplo resuelto — Media con datos agrupados</div>
+      <p>Con la tabla del ejemplo anterior (n = 40):</p>
+      <p>Σ(xi · fi) = 55×3 + 65×7 + 75×12 + 85×10 + 95×8 = 165 + 455 + 900 + 850 + 760 = <strong>3130</strong></p>
+      <p>X̄ = 3130 / 40 = <strong>78,25 puntos</strong></p>
+      <p>El intervalo mediano es [70–80) porque Fi-1 = 10 &lt; n/2 = 20 ≤ Fi = 22.<br/>
+      Mdn = 70 + [(20 – 10) / 12] × 10 = 70 + 8,33 = <strong>78,33 puntos</strong></p>
+      <p>El intervalo modal es [70–80) (fi = 12, el mayor).<br/>
+      d1 = 12 – 7 = 5 · d2 = 12 – 10 = 2 → Mo = 70 + [5/(5+2)] × 10 = 70 + 7,14 = <strong>77,14 puntos</strong></p>
+    </div>
+
+    <div class="alert alert-red">
+      <span class="icon">🚫</span>
+      <div><p><strong>Error frecuente:</strong> Usar los límites del intervalo en lugar de la marca de clase (xi) para calcular la media. Recuerda: debes multiplicar <em>xi × fi</em>, no el límite inferior.</p></div>
+    </div>
+  </div>
+
+  <div class="section-header" style="padding-top:16px;">
+    <span class="section-number">Video 2</span>
+    <h2 class="section-title" style="font-size:1.3rem;">MTC datos agrupados — Profe Alex</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="video-grid" style="grid-template-columns:1fr;">
+    <div class="video-card" style="max-width:560px;margin:0 auto;">
+      <iframe src="https://www.youtube.com/embed/fOuRqk1nzgY" title="Media Mediana Moda datos sin agrupar - Profe Alex" allowfullscreen loading="lazy"></iframe>
+      <div class="video-info">
+        <div class="v-title">📈 Media, Mediana y Moda — Profe Alex</div>
+        <div class="v-desc">Explicación completa de las tres medidas de tendencia central con ejemplos paso a paso. Base esencial para los datos agrupados.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- ===== TEMA 3: HISTOGRAMA Y POLÍGONO ===== -->
+  <div class="section-header">
+    <span class="section-number">Tema 03</span>
+    <h2 class="section-title">Histograma y Polígono de Frecuencias</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📚 Representación gráfica de datos agrupados</div>
+    <span class="topic-badge teal">Histograma</span>&nbsp;
+    <span class="topic-badge">Polígono de frecuencias</span>
+    <br/><br/>
+
+    <div class="def-box">
+      <strong>Histograma</strong>
+      <p>Gráfico de <strong>barras contiguas</strong> (sin espacio entre ellas) donde cada barra representa un intervalo de clase. La altura de cada barra corresponde a la frecuencia (absoluta o relativa). El eje X muestra los intervalos y el eje Y la frecuencia.</p>
+    </div>
+
+    <div class="def-box">
+      <strong>Polígono de Frecuencias</strong>
+      <p>Se construye <strong>uniendo con segmentos de línea</strong> los puntos medios (marcas de clase) de la parte superior de cada barra del histograma. Permite ver la forma de la distribución y comparar fácilmente dos grupos en la misma gráfica.</p>
+    </div>
+
+    <p style="font-weight:600;color:var(--navy);margin-bottom:8px;">Histograma de frecuencias absolutas — 40 estudiantes:</p>
+    <div class="hist-visual">
+      <div style="display:flex;align-items:flex-end;gap:2px;height:160px;padding:0 10px;border-left:2px solid var(--navy);border-bottom:2px solid var(--navy);">
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--navy);margin-bottom:4px;">3</div>
+          <div style="width:100%;height:40px;background:#2e86c1;border-radius:3px 3px 0 0;"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--gray);margin-top:6px;text-align:center;">[50–60)</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--navy);margin-bottom:4px;">7</div>
+          <div style="width:100%;height:93px;background:#1a4d8f;border-radius:3px 3px 0 0;"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--gray);margin-top:6px;text-align:center;">[60–70)</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--navy);margin-bottom:4px;">12</div>
+          <div style="width:100%;height:160px;background:#0e7c7b;border-radius:3px 3px 0 0;"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--gray);margin-top:6px;text-align:center;">[70–80)</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--navy);margin-bottom:4px;">10</div>
+          <div style="width:100%;height:133px;background:#1a4d8f;border-radius:3px 3px 0 0;"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--gray);margin-top:6px;text-align:center;">[80–90)</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--navy);margin-bottom:4px;">8</div>
+          <div style="width:100%;height:107px;background:#2e86c1;border-radius:3px 3px 0 0;"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--gray);margin-top:6px;text-align:center;">[90–100]</div>
+        </div>
+      </div>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--gray);text-align:center;margin-top:8px;">Frecuencia absoluta (fi) — Intervalos de clase</p>
+    </div>
+
+    <div class="example">
+      <div class="ex-label">✏️ ¿Cómo se traza el polígono de frecuencias?</div>
+      <p><strong>Paso 1:</strong> Identifica la marca de clase (xi) de cada intervalo: 55, 65, 75, 85, 95.</p>
+      <p><strong>Paso 2:</strong> Ubica el punto (xi, fi) sobre la parte superior de cada barra: (55,3), (65,7), (75,12), (85,10), (95,8).</p>
+      <p><strong>Paso 3:</strong> Une los puntos con segmentos de línea recta. Cierra el polígono en 0 a izquierda (45,0) y derecha (105,0).</p>
+      <p>→ El punto más alto del polígono está en <strong>(75, 12)</strong> → el intervalo [70–80) es el modal.</p>
+    </div>
+
+    <div class="alert">
+      <span class="icon">💡</span>
+      <div><p><strong>Diferencia clave:</strong> En un histograma las barras están <em>pegadas</em> (datos continuos). En un diagrama de barras hay espacios (datos discretos o cualitativos). Para datos agrupados en intervalos siempre se usa histograma.</p></div>
+    </div>
+  </div>
+
+  <div class="section-header" style="padding-top:16px;">
+    <span class="section-number">Video 3</span>
+    <h2 class="section-title" style="font-size:1.3rem;">Histograma y Polígono — Profe Alex</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="video-grid" style="grid-template-columns:1fr;">
+    <div class="video-card" style="max-width:560px;margin:0 auto;">
+      <iframe src="https://www.youtube.com/embed/2QVYMCKMoGs" title="Histograma y Polígono de Frecuencias - Profe Alex" allowfullscreen loading="lazy"></iframe>
+      <div class="video-info">
+        <div class="v-title">📉 Histograma y Polígono de Frecuencias — Profe Alex</div>
+        <div class="v-desc">Cómo construir un histograma a partir de una tabla de frecuencias y trazar el polígono uniendo las marcas de clase.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- ===== INSTRUCCIONES ===== -->
+  <div class="section-header">
+    <span class="section-number">Taller</span>
+    <h2 class="section-title">Instrucciones del Trabajo Escrito</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="instructions-box">
+    <h3>📋 ¿Cómo presentar el taller?</h3>
+    <ol>
+      <li><strong>Descarga</strong> el archivo .docx con el botón de abajo.</li>
+      <li><strong>Todos los ejercicios</strong> usan el mismo conjunto de datos: 40 calificaciones agrupadas en 5 intervalos de amplitud 10.</li>
+      <li><strong>Muestra todos los procedimientos</strong> — fórmulas, sustitución y resultado. Respuestas sin desarrollo no tienen valor.</li>
+      <li>El taller tiene <strong>3 temas</strong>: Tabla de Frecuencias · Medidas de Tendencia Central · Histograma y Polígono.</li>
+      <li>Cada tema tiene <strong>Parte A básica (40%)</strong> y <strong>Parte B desafiante (60%)</strong>.</li>
+      <li>La <strong>nota final</strong>: Taller escrito (40%) + Asesoría (20%) + Sustentación (40%).</li>
+      <li><strong>Para el histograma y el polígono</strong> usa regla y lápiz. Incluye título, ejes con escala y etiquetas.</li>
+    </ol>
+  </div>
+
+  <div class="download-section">
+    <h2>¿Listo para resolver el taller?</h2>
+    <p>Descarga el documento Word con todos los ejercicios, tablas para completar, espacio para gráficas y tabla de calificación.</p>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:14px;">
+      <button class="btn-primary" onclick="descargarTaller()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Descargar Taller — Grado 11°
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Institución Educativa Sagrado Corazón de Jesús · Probabilidad y Estadística Grado 11° · Plan de Mejoramiento Período 1 · 2026
+</footer>
+
+<script>
+const DOCX_B64 = "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";
+function descargarTaller() {
+  try {
+    const binary = atob(DOCX_B64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    const blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Taller_Grado11_Probabilidad_Estadistica.docx";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1000);
+  } catch(e) {
+    alert("Error al generar el archivo. Intenta de nuevo.");
+  }
+}
+</script>
+</body>
+</html>
